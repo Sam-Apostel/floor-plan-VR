@@ -1,4 +1,3 @@
-import { Center } from '@react-three/drei';
 import { Vector2 } from 'three';
 import { XY } from '../types';
 import StandardMaterial from '../utils/StandardMaterial';

@@ -1,9 +1,9 @@
 import { Center } from '@react-three/drei';
 import { XY } from '../types';
 
-import useUV from '../utils/useUv';
+import useUV from '../utils/useUV';
 import StandardMaterial from '../utils/StandardMaterial';
-import { Door } from './Door';
+// import { Door } from './Door';
 
 export function Wall({
 	start,

@@ -1,13 +1,13 @@
 import {
-	AccumulativeShadows,
+	// AccumulativeShadows,
 	Environment,
 	OrbitControls,
-	RandomizedLight,
-	Grid,
+	// RandomizedLight,
+	// Grid,
 } from '@react-three/drei';
 import './App.css';
 import { Canvas } from '@react-three/fiber';
-import { memo } from 'react';
+// import { memo } from 'react';
 
 import { IfInSessionMode, XR, XROrigin, createXRStore } from '@react-three/xr';
 import { useLocomotion } from './useLocomotion';
@@ -76,18 +76,18 @@ function Locomotion() {
 	return <XROrigin ref={locomotionRef} />;
 }
 
-const Shadows = memo(() => (
-	<AccumulativeShadows
-		// temporal
-		// frames={100}
-		color="#9d4b4b"
-		colorBlend={0.5}
-		alphaTest={0.9}
-		scale={20}
-	>
-		<RandomizedLight amount={8} radius={4} position={[0, 5, 0]} />
-	</AccumulativeShadows>
-));
+// const Shadows = memo(() => (
+// 	<AccumulativeShadows
+// 		// temporal
+// 		// frames={100}
+// 		color="#9d4b4b"
+// 		colorBlend={0.5}
+// 		alphaTest={0.9}
+// 		scale={20}
+// 	>
+// 		<RandomizedLight amount={8} radius={4} position={[0, 5, 0]} />
+// 	</AccumulativeShadows>
+// ));
 
 export default App;
 
