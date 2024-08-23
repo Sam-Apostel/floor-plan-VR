@@ -104,6 +104,23 @@ export const rooms = [
 					y: 3.15 + (3.68 - 3.07),
 				},
 			},
+			{
+				height: WALL_HEIGHT,
+				width: 0.19,
+				start: {
+					x: -0.46 - 1.28 - WALL_WIDTH - (3.04 - 1.28),
+					y: 3.15 + 3.68,
+				},
+				end: {
+					x: -0.41,
+					y: 3.15 + 3.68,
+				},
+				door: {
+					distance: 0.8,
+					width: 1.93,
+					height: DOOR_HEIGHT,
+				},
+			},
 		],
 	},
 	{
@@ -225,6 +242,23 @@ export const rooms = [
 				end: {
 					x: -0.31 + 1.2 + 1.98 + 0.7,
 					y: 3.05 + 3.68 + 0.1,
+				},
+			},
+			{
+				height: WALL_HEIGHT,
+				width: 0.19,
+				start: {
+					x: -0.41,
+					y: 3.15 + 3.68,
+				},
+				end: {
+					x: -0.41 + 4.03,
+					y: 3.15 + 3.68,
+				},
+				door: {
+					distance: 1.08,
+					width: 1.93,
+					height: DOOR_HEIGHT,
 				},
 			},
 		],

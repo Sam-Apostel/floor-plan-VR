@@ -1,14 +1,12 @@
 import {
-	// AccumulativeShadows,
+	AccumulativeShadows,
 	Environment,
 	OrbitControls,
-	// RandomizedLight,
+	RandomizedLight,
 	// Grid,
 } from '@react-three/drei';
 import './App.css';
 import { Canvas } from '@react-three/fiber';
-// import { memo } from 'react';
-
 import { IfInSessionMode, XR, XROrigin, createXRStore } from '@react-three/xr';
 import { useLocomotion } from './useLocomotion';
 import Floorplan from './3D/Floorplan';
@@ -17,6 +15,7 @@ import { Wall } from './3D/Wall';
 import Floor from './3D/Floor';
 import Bed from './3D/Bed';
 import { Desk } from './3D/Desk';
+import { memo } from 'react';
 
 const store = createXRStore();
 
@@ -36,23 +35,7 @@ function App() {
 				<XR store={store}>
 					<group position={[0, 0, 0]}>
 						<Scene />
-						{/* <Shadows /> */}
-						{/* <Grid
-							position={[0, -0.01, 0]}
-							args={[10, 10]}
-							{...{
-								cellSize: 0.5,
-								cellThickness: 1,
-								cellColor: '#6f6f6f',
-								sectionSize: 2.5,
-								sectionThickness: 1.5,
-								sectionColor: '#9d4b4b',
-								fadeDistance: 25,
-								fadeStrength: 1,
-								followCamera: false,
-								infiniteGrid: true,
-							}}
-						/> */}
+						<Shadows />
 					</group>
 					<IfInSessionMode deny={['immersive-ar', 'immersive-vr']}>
 						<OrbitControls />
@@ -76,18 +59,18 @@ function Locomotion() {
 	return <XROrigin ref={locomotionRef} />;
 }
 
-// const Shadows = memo(() => (
-// 	<AccumulativeShadows
-// 		// temporal
-// 		// frames={100}
-// 		color="#9d4b4b"
-// 		colorBlend={0.5}
-// 		alphaTest={0.9}
-// 		scale={20}
-// 	>
-// 		<RandomizedLight amount={8} radius={4} position={[0, 5, 0]} />
-// 	</AccumulativeShadows>
-// ));
+const Shadows = memo(() => (
+	<AccumulativeShadows
+		temporal
+		frames={100}
+		color="#9d4b4b"
+		colorBlend={0.5}
+		alphaTest={0.9}
+		scale={20}
+	>
+		<RandomizedLight amount={8} radius={4} position={[0, 5, 0]} />
+	</AccumulativeShadows>
+));
 
 export default App;
 
@@ -103,9 +86,11 @@ function Scene() {
 					<Floor {...room.floor} />
 				</group>
 			))}
-			<Bed position={[-2.3, 0, 5.3]} rotation={[0, Math.PI, 0]} />
-			<Bed position={[2.3, 0, 5.3]} />
-			<Desk position={[2, 0, 3.1]} />
+			<IfInSessionMode deny={['immersive-ar', 'immersive-vr']}>
+				<Bed position={[-2.3, 0, 5.3]} rotation={[0, Math.PI, 0]} />
+				<Bed position={[2.3, 0, 5.3]} />
+				<Desk position={[2, 0, 3.1]} />
+			</IfInSessionMode>
 			<Floorplan />
 		</group>
 	);
