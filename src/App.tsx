@@ -12,8 +12,11 @@ import { memo } from 'react';
 import { IfInSessionMode, XR, XROrigin, createXRStore } from '@react-three/xr';
 import { useLocomotion } from './useLocomotion';
 import Floorplan from './3D/Floorplan';
-import { walls } from './3D/data';
+import { rooms } from './3D/data';
 import { Wall } from './3D/Wall';
+import Floor from './3D/Floor';
+import Bed from './3D/Bed';
+import { Desk } from './3D/Desk';
 
 const store = createXRStore();
 
@@ -33,8 +36,8 @@ function App() {
 				<XR store={store}>
 					<group position={[0, 0, 0]}>
 						<Scene />
-						<Shadows />
-						<Grid
+						{/* <Shadows /> */}
+						{/* <Grid
 							position={[0, -0.01, 0]}
 							args={[10, 10]}
 							{...{
@@ -49,7 +52,7 @@ function App() {
 								followCamera: false,
 								infiniteGrid: true,
 							}}
-						/>
+						/> */}
 					</group>
 					<IfInSessionMode deny={['immersive-ar', 'immersive-vr']}>
 						<OrbitControls />
@@ -91,9 +94,18 @@ export default App;
 function Scene() {
 	return (
 		<group position={[0, 0, 0]}>
-			{walls.map((wall, i) => (
-				<Wall {...wall} key={i} />
+			{rooms.map((room) => (
+				<group key={room.name}>
+					{room.walls.map((wall, i) => (
+						<Wall {...wall} key={i} />
+					))}
+
+					<Floor {...room.floor} />
+				</group>
 			))}
+			<Bed position={[-2.3, 0, 5.3]} rotation={[0, Math.PI, 0]} />
+			<Bed position={[2.3, 0, 5.3]} />
+			<Desk position={[2, 0, 3.1]} />
 			<Floorplan />
 		</group>
 	);

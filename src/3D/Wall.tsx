@@ -1,8 +1,9 @@
-import { Center, useTexture } from '@react-three/drei';
-import { Mesh, MirroredRepeatWrapping, Vector2 } from 'three';
-import { LinearEncoding } from '@react-three/drei/helpers/deprecated';
+import { Center } from '@react-three/drei';
 import { XY } from '../types';
-import { useLayoutEffect, useRef } from 'react';
+
+import useUV from '../utils/useUv';
+import StandardMaterial from '../utils/StandardMaterial';
+import { Door } from './Door';
 
 export function Wall({
 	start,
@@ -54,27 +55,7 @@ function WallSection({
 	y = 0,
 	door,
 }: WallSectionProps) {
-	const mesh = useRef<Mesh>(null);
-
-	useLayoutEffect(() => {
-		if (!mesh.current) return;
-
-		const geometry = mesh.current?.geometry;
-
-		const pos = geometry.getAttribute('position');
-		const uv = geometry.getAttribute('uv');
-
-		for (var i = 0; i < pos.count; i++) {
-			var x = length * (pos.getX(i) + 0.5),
-				y = height * (pos.getY(i) + 0.5),
-				z = width * (pos.getZ(i) + 0.5);
-
-			if (i < 8) uv.setXY(i, z, y);
-			else if (i < 16) uv.setXY(i, x, z);
-			else uv.setXY(i, y, x);
-		}
-		uv.needsUpdate = true;
-	}, [width, height, length]);
+	const mesh = useUV(length, width, height);
 
 	if (door) {
 		const endLength = length - door.width - door.distance;
@@ -93,6 +74,10 @@ function WallSection({
 					length={door.width}
 					x={door.distance + door.width / 2}
 				/>
+				{/* <Door
+					rotation={[0, Math.PI / 2, 0]}
+					position={[door.distance + door.width / 2, 0, 0]}
+				/> */}
 				<WallSection
 					height={height}
 					width={width}
@@ -104,21 +89,41 @@ function WallSection({
 	}
 
 	return (
-		<Center top position={[x, bottom, y]} rotation={[0, angle, 0]}>
-			<mesh castShadow receiveShadow ref={mesh}>
-				<boxGeometry
-					args={[
-						length,
-						height,
-						width,
-						length * 100,
-						height * 100,
-						width * 100,
-					]}
-				/>
-				<WallMaterial />
-			</mesh>
-		</Center>
+		<>
+			{bottom === 0 && (
+				<>
+					<Center top position={[x, 0, y]} rotation={[0, angle, 0]}>
+						<Baseboard length={length} offset={width / 2} />
+
+						<Baseboard
+							length={length}
+							offset={width / 2}
+							negativeOffset
+						/>
+					</Center>
+					<Center
+						top
+						position={[x, 0, y]}
+						rotation={[0, angle - Math.PI / 2, 0]}
+					>
+						<Baseboard length={width + 0.02} offset={length / 2} />
+						<Baseboard
+							length={width + 0.02}
+							offset={length / 2}
+							negativeOffset
+						/>
+					</Center>
+				</>
+			)}
+			{length > 0 && (
+				<Center top position={[x, bottom, y]} rotation={[0, angle, 0]}>
+					<mesh castShadow receiveShadow ref={mesh}>
+						<boxGeometry args={[length, height, width]} />
+						<StandardMaterial folder="wall" />
+					</mesh>
+				</Center>
+			)}
+		</>
 	);
 }
 
@@ -134,30 +139,27 @@ type WallSectionProps = {
 	door?: { distance: number; width: number; height: number };
 };
 
-function WallMaterial({}) {
-	const wallTextures = useTexture(
-		{
-			map: '/textures/ph-wall/diff.png',
-			displacementMap: '/textures/ph-wall/disp.png',
-			aoMap: '/textures/ph-wall/arm.png',
-			roughnessMap: '/textures/ph-wall/arm.png',
-			metalnessMap: '/textures/ph-wall/arm.png',
-			normalMap: '/textures/ph-wall/nor_gl.png',
-		},
-		(textures) => {
-			Object.values(textures).forEach((texture) => {
-				texture.wrapS = MirroredRepeatWrapping;
-				texture.wrapT = MirroredRepeatWrapping;
-				texture.repeat = new Vector2(1, 1);
-			});
-		},
-	);
-
+function Baseboard({
+	length,
+	offset,
+	negativeOffset = false,
+}: {
+	length: number;
+	offset: number;
+	negativeOffset?: boolean;
+}) {
+	const meshRef = useUV(length);
 	return (
-		<meshStandardMaterial
-			{...wallTextures}
-			normalMap-encoding={LinearEncoding}
-			displacementScale={0.002}
-		/>
+		<mesh
+			ref={meshRef}
+			position={[
+				0,
+				0,
+				0.005 + (0.005 + offset) * (negativeOffset ? -1 : 1),
+			]}
+		>
+			<boxGeometry args={[length, 0.1, 0.01]} />
+			<StandardMaterial folder="oak-veneer" />
+		</mesh>
 	);
 }
