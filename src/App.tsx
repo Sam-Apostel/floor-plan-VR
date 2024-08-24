@@ -1,8 +1,6 @@
 import {
-	AccumulativeShadows,
 	Environment,
 	OrbitControls,
-	RandomizedLight,
 	// Grid,
 } from '@react-three/drei';
 import './App.css';
@@ -15,7 +13,6 @@ import { Wall } from './3D/Wall';
 import Floor from './3D/Floor';
 import Bed from './3D/Bed';
 import { Desk } from './3D/Desk';
-import { memo } from 'react';
 
 const store = createXRStore();
 
@@ -35,7 +32,7 @@ function App() {
 				<XR store={store}>
 					<group position={[0, 0, 0]}>
 						<Scene />
-						<Shadows />
+						{/* <Shadows /> */}
 					</group>
 					<IfInSessionMode deny={['immersive-ar', 'immersive-vr']}>
 						<OrbitControls />
@@ -59,18 +56,18 @@ function Locomotion() {
 	return <XROrigin ref={locomotionRef} />;
 }
 
-const Shadows = memo(() => (
-	<AccumulativeShadows
-		temporal
-		frames={100}
-		color="#9d4b4b"
-		colorBlend={0.5}
-		alphaTest={0.9}
-		scale={20}
-	>
-		<RandomizedLight amount={8} radius={4} position={[0, 5, 0]} />
-	</AccumulativeShadows>
-));
+// const Shadows = memo(() => (
+// 	<AccumulativeShadows
+// 		temporal
+// 		frames={100}
+// 		color="#9d4b4b"
+// 		colorBlend={0.5}
+// 		alphaTest={0.9}
+// 		scale={20}
+// 	>
+// 		<RandomizedLight amount={8} radius={4} position={[0, 5, 0]} />
+// 	</AccumulativeShadows>
+// ));
 
 export default App;
 

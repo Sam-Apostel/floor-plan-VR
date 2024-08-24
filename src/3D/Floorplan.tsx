@@ -10,7 +10,7 @@ export default function Floorplan() {
 			transparent
 			opacity={0.5}
 			scale={[scale * aspectRatio, scale]}
-			position={[0, -0.001, 0]}
+			position={[0, -0.01, 0]}
 			rotation={[-Math.PI / 2, 0, 0]}
 		/>
 	);
