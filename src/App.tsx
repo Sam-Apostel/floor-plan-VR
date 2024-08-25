@@ -19,15 +19,29 @@ const store = createXRStore();
 function App() {
 	return (
 		<>
+			<div style={{
+				display: 'flex',
+				gap: '1rem'
+			}}>
 			<button
 				onClick={() => store.enterVR()}
 				style={{
 					paddingBlock: '4px',
 					margin: '4px',
 				}}
-			>
+				>
 				Enter VR
 			</button>
+			<button
+				onClick={() => store.enterAR()}
+				style={{
+					paddingBlock: '4px',
+					margin: '4px',
+				}}
+				>
+				Enter AR
+			</button>
+			</div>
 			<Canvas shadows camera={{ position: [10, 12, 12], fov: 25 }}>
 				<XR store={store}>
 					<group position={[0, 0, 0]}>
@@ -83,7 +97,7 @@ function Scene() {
 					<Floor {...room.floor} />
 				</group>
 			))}
-			<IfInSessionMode deny={['immersive-ar', 'immersive-vr']}>
+			<IfInSessionMode deny={[/*'immersive-ar', 'immersive-vr'*/]}>
 				<Bed position={[-2.3, 0, 5.3]} rotation={[0, Math.PI, 0]} />
 				<Bed position={[2.3, 0, 5.3]} />
 				<Desk position={[2, 0, 3.1]} />
