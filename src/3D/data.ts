@@ -325,7 +325,7 @@ export const rooms = [
 			},
 			{
 				height: WALL_HEIGHT,
-				width: 0.19,
+				width: 0.18,
 				start: {
 					x: -0.51 - 1.28 - (3.04 - 1.28) - 0.2,
 					y: 3.15 + (3.68 - 3.07) - 1.85 - 0.19,
@@ -345,7 +345,7 @@ export const rooms = [
 				width: WALL_WIDTH,
 				start: {
 					x: -0.51 - 1.28 - (3.04 - 1.28) + 3.3,
-					y: 3.15 + (3.68 - 3.07) - 1.85 - 0.19 - 0.095,
+					y: 3.15 + (3.68 - 3.07) - 1.85 - 0.19 - 0.09,
 				},
 				end: {
 					x: -0.51 - 1.28 - (3.04 - 1.28) + 3.3,
@@ -374,16 +374,66 @@ export const rooms = [
 				width: WALL_WIDTH,
 				start: {
 					x: -0.51 + 1.3,
-					y: 3.1 - 2.82 - 0.11,
+					y: 3.1 - 2.82 - 0.11 + WALL_WIDTH / 2,
 				},
 				end: {
 					x: -0.51 + 1.3,
+					y: 3.1 - 0.34 - 0.955,
+				},
+			},
+		],
+	},
+	{
+		name: 'toilet',
+		floor: {
+			points: [
+				{
+					x: -0.51 + 1.2 + WALL_WIDTH,
 					y: 3.1 - 0.34,
 				},
-				door: {
-					distance: 0.1,
-					width: DOOR_WIDTH,
-					height: DOOR_HEIGHT,
+				{
+					x: -0.51 + 1.2 + WALL_WIDTH + 1.98 + WALL_WIDTH,
+					y: 3.1 - 0.34,
+				},
+				{
+					x: -0.51 + 1.2 + WALL_WIDTH + 1.98 + WALL_WIDTH,
+					y: 3.1 - 0.34 - 0.9 - 0.13,
+				},
+				{
+					x: -0.51 + 1.2 + WALL_WIDTH,
+					y: 3.1 - 0.34 - 0.9 - 0.13,
+				},
+			],
+		},
+		walls: [
+			{
+				height: WALL_HEIGHT,
+				width: 0.15,
+				start: {
+					x: -0.51 + 1.2 + WALL_WIDTH / 2 + WALL_WIDTH,
+					y: 3.1 - 0.34 - 0.9 - 0.13,
+				},
+				end: {
+					x:
+						-0.51 +
+						1.2 +
+						WALL_WIDTH +
+						1.98 +
+						WALL_WIDTH / 2 +
+						WALL_WIDTH,
+					y: 3.1 - 0.34 - 0.9 - 0.13,
+				},
+			},
+			{
+				height: WALL_HEIGHT,
+				width: WALL_WIDTH,
+				start: {
+					x: -0.51 + 1.2 + WALL_WIDTH + 1.98 + WALL_WIDTH,
+					y: 3.1 - 0.34 - 0.9 - 0.13 + 0.075,
+				},
+				end: {
+					x: -0.51 + 1.2 + WALL_WIDTH + 1.98 + WALL_WIDTH,
+					y: 3.1 - 0.34 - WALL_WIDTH / 2,
 				},
 			},
 		],

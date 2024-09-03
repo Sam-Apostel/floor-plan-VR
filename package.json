@@ -10,13 +10,15 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@react-three/csg": "^3.2.0",
 		"@react-three/drei": "^9.111.2",
 		"@react-three/fiber": "^8.17.5",
 		"@react-three/xr": "^6.2.1",
 		"quixel-to-three": "^1.0.4",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"three": "^0.167.1"
+		"three": "^0.167.1",
+		"three-rounded-box": "^0.1.1"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.9.0",
