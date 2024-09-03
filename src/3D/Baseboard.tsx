@@ -37,7 +37,7 @@ function Baseboard({
 }) {
 	return (
 		<group rotation={[0, angle, 0]} position={[position.x, 0, position.y]}>
-			<mesh position={[0.005, 0.05, 0]}>
+			<mesh position={[0.005, 0.05, 0]} receiveShadow castShadow>
 				<boxGeometry args={[0.01, 0.1, length + 0.02]} />
 				<StandardMaterial folder="oak-veneer" />
 			</mesh>

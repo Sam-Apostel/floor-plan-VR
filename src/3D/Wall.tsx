@@ -157,6 +157,8 @@ function Baseboard({
 				0,
 				0.005 + (0.005 + offset) * (negativeOffset ? -1 : 1),
 			]}
+			receiveShadow
+			castShadow
 		>
 			<boxGeometry args={[length, 0.1, 0.01]} />
 			<StandardMaterial folder="oak-veneer" />

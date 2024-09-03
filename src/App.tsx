@@ -346,7 +346,7 @@ function SinkCabinets() {
 				receiveShadow
 				castShadow
 			>
-				<mesh position={[0.015 / 2, 0, 0]}>
+				<mesh position={[0.015 / 2, 0, 0]} receiveShadow castShadow>
 					<Geometry>
 						<Base>
 							<boxGeometry
@@ -410,7 +410,7 @@ function Cabinet({
 			receiveShadow
 			castShadow
 		>
-			<mesh position={[0.015 / 2, 0, 0]}>
+			<mesh position={[0.015 / 2, 0, 0]} receiveShadow castShadow>
 				<Geometry>
 					<Base>
 						<boxGeometry args={[depth - 0.015, heigth, width]} />
@@ -542,7 +542,7 @@ function Oven({
 			receiveShadow
 			castShadow
 		>
-			<mesh position={[0.015 / 2, 0, 0]}>
+			<mesh position={[0.015 / 2, 0, 0]} receiveShadow castShadow>
 				<boxGeometry args={[0.6 - 0.015, 0.8, 0.6]} />
 				<CabinetMaterial />
 			</mesh>
