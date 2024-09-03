@@ -3,6 +3,7 @@ import { XY } from '../types';
 
 import useUV from '../utils/useUV';
 import StandardMaterial from '../utils/StandardMaterial';
+import { RoundedBoxGeometry } from 'three/examples/jsm/Addons.js';
 // import { Door } from './Door';
 
 export function Wall({
@@ -92,25 +93,14 @@ function WallSection({
 		<>
 			{bottom === 0 && (
 				<>
-					<Center top position={[x, 0, y]} rotation={[0, angle, 0]}>
-						<Baseboard length={length} offset={width / 2} />
-
-						<Baseboard
-							length={length}
-							offset={width / 2}
-							negativeOffset
-						/>
-					</Center>
 					<Center
 						top
-						position={[x, 0, y]}
-						rotation={[0, angle - Math.PI / 2, 0]}
+						position={[x, bottom, y]}
+						rotation={[0, angle, 0]}
 					>
-						<Baseboard length={width + 0.02} offset={length / 2} />
-						<Baseboard
-							length={width + 0.02}
-							offset={length / 2}
-							negativeOffset
+						<Baseboard2
+							length={length + 0.02}
+							thickness={width + 0.02}
 						/>
 					</Center>
 				</>
@@ -139,6 +129,23 @@ type WallSectionProps = {
 	door?: { distance: number; width: number; height: number };
 };
 
+function Baseboard2({
+	length,
+	thickness,
+}: {
+	length: number;
+	thickness: number;
+}) {
+	const meshRef = useUV(length);
+
+	const geometry = new RoundedBoxGeometry(length, 0.1, thickness, 5, 0.004);
+	return (
+		<mesh ref={meshRef} receiveShadow castShadow geometry={geometry}>
+			<StandardMaterial folder="oak-veneer" />
+		</mesh>
+	);
+}
+
 function Baseboard({
 	length,
 	offset,
@@ -149,6 +156,8 @@ function Baseboard({
 	negativeOffset?: boolean;
 }) {
 	const meshRef = useUV(length);
+
+	const geometry = new RoundedBoxGeometry(length, 0.1, 0.01, 5, 0.004);
 	return (
 		<mesh
 			ref={meshRef}
@@ -159,8 +168,8 @@ function Baseboard({
 			]}
 			receiveShadow
 			castShadow
+			geometry={geometry}
 		>
-			<boxGeometry args={[length, 0.1, 0.01]} />
 			<StandardMaterial folder="oak-veneer" />
 		</mesh>
 	);
