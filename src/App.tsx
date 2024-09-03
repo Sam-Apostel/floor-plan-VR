@@ -1,10 +1,9 @@
 import {
-	AccumulativeShadows,
 	Center,
 	Environment,
 	OrbitControls,
-	RandomizedLight,
-	// Grid,
+	Sky,
+	SoftShadows,
 } from '@react-three/drei';
 import './App.css';
 import { Canvas } from '@react-three/fiber';
@@ -16,11 +15,13 @@ import { Wall } from './3D/Wall';
 import Floor from './3D/Floor';
 import Bed from './3D/Bed';
 import { Desk } from './3D/Desk';
-import { memo } from 'react';
 import StandardMaterial from './utils/StandardMaterial';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import KitchenSink from './3D/kitchen-sink';
 import { Base, Difference, Geometry, Subtraction } from '@react-three/csg';
+import { EffectComposer, SSAO } from '@react-three/postprocessing';
+
+import { BlendFunction } from 'postprocessing';
 
 const store = createXRStore();
 
@@ -56,17 +57,115 @@ function App() {
 				<XR store={store}>
 					<group position={[0, 0, 0]}>
 						<Scene />
-						<Shadows />
+						{/* <Shadows /> */}
 					</group>
 					<IfInSessionMode deny={['immersive-ar', 'immersive-vr']}>
 						<OrbitControls />
 					</IfInSessionMode>
 					<Locomotion />
-					<Environment preset="city" />
-					<ambientLight />
-					<hemisphereLight args={['#ffeeb1', '#080820', 4]} />
+					<Lighting />
+					<Effects />
 				</XR>
 			</Canvas>
+		</>
+	);
+}
+
+function Effects() {
+	return (
+		<EffectComposer enableNormalPass>
+			<SSAO
+				blendFunction={BlendFunction.MULTIPLY} // blend mode
+				samples={30} // amount of samples per pixel (shouldn't be a multiple of the ring count)
+				rings={4} // amount of rings in the occlusion sampling pattern
+				distanceThreshold={1.0} // global distance threshold at which the occlusion effect starts to fade out. min: 0, max: 1
+				distanceFalloff={0.0} // distance falloff. min: 0, max: 1
+				rangeThreshold={0.5} // local occlusion range threshold at which the occlusion starts to fade out. min: 0, max: 1
+				rangeFalloff={0.1} // occlusion range falloff. min: 0, max: 1
+				luminanceInfluence={0.9} // how much the luminance of the scene influences the ambient occlusion
+				radius={20} // occlusion sampling radius
+				// scale={0.5} // scale of the ambient occlusion
+				bias={0.5} // occlusion bias
+				worldDistanceThreshold={0.1}
+				worldDistanceFalloff={0.1}
+				worldProximityThreshold={0.1}
+				worldProximityFalloff={0.1}
+			/>
+		</EffectComposer>
+	);
+}
+
+function Lighting() {
+	// const light = useRef<RectAreaLight>(null!);
+
+	// useHelper(light, RectAreaLightHelper, 'red');
+
+	return (
+		<>
+			<Environment preset="city" />
+			<hemisphereLight args={['#ffeeb1', '#080820', 1]} />
+			<Sky />
+			<ambientLight intensity={0.4} />
+			<rectAreaLight
+				width={0.2}
+				height={2}
+				position={[3.4, 1.7, -1.52]}
+				rotation-x={-Math.PI / 2}
+				intensity={5}
+				color="#ffffa0"
+			/>
+
+			<rectAreaLight
+				width={0.2}
+				height={2}
+				position={[1.5, 1.7, -1.52]}
+				rotation-x={-Math.PI / 2}
+				intensity={10}
+				color="#ffffa0"
+			/>
+
+			{/* <rectAreaLight
+				width={2}
+				height={2}
+				position={[1.65, 1, 7]}
+				intensity={4}
+				color="#ffffa0"
+			/>
+			<rectAreaLight
+				width={2}
+				height={2}
+				position={[-1.85, 1, 7]}
+				intensity={4}
+				color="#ffffa0"
+			/> */}
+
+			<rectAreaLight
+				width={3}
+				height={0.1}
+				position={[0, 2.5, 2.25]}
+				rotation-x={-Math.PI / 2}
+				intensity={12}
+				color="#ffffdd"
+			/>
+			<SoftShadows samples={16} focus={0.5} size={35} />
+			<directionalLight
+				position={[1.5, 2.5, -1.52]}
+				castShadow
+				intensity={5}
+				shadow-mapSize={2048}
+				shadow-bias={-0.001}
+			>
+				<orthographicCamera
+					attach="shadow-camera"
+					left={-8.5}
+					right={8.5}
+					top={8.5}
+					bottom={-8.5}
+					near={0.1}
+					far={20}
+				/>
+			</directionalLight>
+			<fog attach="fog" args={['#d0d0d0', 8, 35]} />
 		</>
 	);
 }
@@ -80,19 +179,6 @@ function Locomotion() {
 	});
 	return <XROrigin ref={locomotionRef} />;
 }
-
-const Shadows = memo(() => (
-	<AccumulativeShadows
-		temporal
-		frames={100}
-		color="#9d4b4b"
-		colorBlend={0.5}
-		alphaTest={0.9}
-		scale={20}
-	>
-		<RandomizedLight amount={8} radius={4} position={[0, 5, 0]} />
-	</AccumulativeShadows>
-));
 
 export default App;
 
@@ -109,7 +195,7 @@ function Scene() {
 				</group>
 			))}
 			<Kitchen />
-
+			<Bedrooms />
 			<Floorplan />
 		</group>
 	);
@@ -119,14 +205,14 @@ function Kitchen() {
 	return (
 		<group position={[3.525, 0, 0.12]}>
 			<group position={[0.6 / -2, 0, 3.3 / -2]}>
-				// toe kick
+				{/* toe kick */}
 				<Center top position={[0.03, 0, 0.03]}>
 					<mesh receiveShadow castShadow>
 						<boxGeometry args={[0.6 - 0.06, 0.15, 3.3 - 0.06]} />
-						<meshStandardMaterial color="#ddd0c4" />
+						<CabinetMaterial />
 					</mesh>
 				</Center>
-				// bottom row
+				{/* bottom row */}
 				<Cabinet
 					width={0.6}
 					heigth={0.75}
@@ -163,9 +249,9 @@ function Kitchen() {
 					zPosition={0.15}
 					xPosition={3.3 / 2 - 0.6 / 2 - 0.6 - 0.6 - 0.9 - 0.6}
 				/>
-				// oven
+				{/* oven */}
 				<Oven zPosition={0.9} xPosition={3.3 / 2 - 0.6 / 2} />
-				// top row
+				{/* top row */}
 				<Cabinet
 					width={0.6}
 					heigth={0.8}
@@ -196,9 +282,9 @@ function Kitchen() {
 					zPosition={1.7}
 					xPosition={3.3 / 2 - 0.6 / 2 - 0.6 - 0.6 - 0.9}
 				/>
-				// countertop
+				{/* countertop */}
 				<CounterTop1 />
-				// fridge
+				{/* fridge */}
 				<Cabinet
 					width={0.6}
 					heigth={1.6}
@@ -210,11 +296,11 @@ function Kitchen() {
 				rotation={[0, Math.PI, 0]}
 				position={[0.6 / -2 - 0.93 - 0.7, 0, 3.3 / -2]}
 			>
-				// toe kick
+				{/* toe kick */}
 				<Center top position={[0.03, 0, -0.28]}>
 					<mesh receiveShadow castShadow>
 						<boxGeometry args={[0.7 - 0.06, 0.15, 2.8 - 0.06]} />
-						<meshStandardMaterial color="#ddd0c4" />
+						<CabinetMaterial />
 					</mesh>
 				</Center>
 				<Cabinet
@@ -278,7 +364,7 @@ function SinkCabinets() {
 						</Subtraction>
 					</Geometry>
 
-					<meshStandardMaterial color="#ddd0c4" />
+					<CabinetMaterial />
 				</mesh>
 				<CabinetDoor
 					width={width / 2}
@@ -294,6 +380,12 @@ function SinkCabinets() {
 				/>
 			</Center>
 		</>
+	);
+}
+
+function CabinetMaterial() {
+	return (
+		<meshPhysicalMaterial color="#fffaf7" metalness={0.6} roughness={0.7} />
 	);
 }
 
@@ -330,7 +422,7 @@ function Cabinet({
 					</Subtraction>
 				</Geometry>
 
-				<meshStandardMaterial color="#ddd0c4" />
+				<CabinetMaterial />
 			</mesh>
 			<CabinetDoor width={width} depth={depth} heigth={heigth} />
 		</Center>
@@ -363,7 +455,7 @@ function CabinetDoor({
 			castShadow
 			geometry={doorPanelGeometry}
 		>
-			<meshStandardMaterial color="#ddd0c4" />
+			<CabinetMaterial />
 		</mesh>
 	);
 }
@@ -452,7 +544,7 @@ function Oven({
 		>
 			<mesh position={[0.015 / 2, 0, 0]}>
 				<boxGeometry args={[0.6 - 0.015, 0.8, 0.6]} />
-				<meshStandardMaterial color="#ddd0c4" />
+				<CabinetMaterial />
 			</mesh>
 			<mesh
 				position={[-0.6 / 2 + 0.01 / 2, 0.2, 0]}

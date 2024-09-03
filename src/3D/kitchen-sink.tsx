@@ -19,7 +19,7 @@ type GLTFResult = GLTF & {
 		Blanco_Metra_6S_Compact_78x50x19sm_ALL_COLOR_dark_grey03001_1: THREE.Mesh;
 		Blanco_Metra_6S_Compact_78x50x19sm_ALL_COLOR_dark_grey03001_2: THREE.Mesh;
 	};
-	materials: {};
+	materials: object;
 };
 
 export default function KitchenSink(props: JSX.IntrinsicElements['group']) {

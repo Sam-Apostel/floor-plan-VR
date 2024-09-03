@@ -1,7 +1,8 @@
 import { useLayoutEffect, useRef } from 'react';
 import { Mesh } from 'three';
 
-export default function useUV(...dependencies: Array<any>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function useUV(...dependencies: any) {
 	const mesh = useRef<Mesh>(null);
 
 	useLayoutEffect(() => {
