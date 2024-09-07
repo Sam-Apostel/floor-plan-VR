@@ -146,31 +146,31 @@ function Baseboard2({
 	);
 }
 
-function Baseboard({
-	length,
-	offset,
-	negativeOffset = false,
-}: {
-	length: number;
-	offset: number;
-	negativeOffset?: boolean;
-}) {
-	const meshRef = useUV(length);
+// function Baseboard({
+// 	length,
+// 	offset,
+// 	negativeOffset = false,
+// }: {
+// 	length: number;
+// 	offset: number;
+// 	negativeOffset?: boolean;
+// }) {
+// 	const meshRef = useUV(length);
 
-	const geometry = new RoundedBoxGeometry(length, 0.1, 0.01, 5, 0.004);
-	return (
-		<mesh
-			ref={meshRef}
-			position={[
-				0,
-				0,
-				0.005 + (0.005 + offset) * (negativeOffset ? -1 : 1),
-			]}
-			receiveShadow
-			castShadow
-			geometry={geometry}
-		>
-			<StandardMaterial folder="oak-veneer" />
-		</mesh>
-	);
-}
+// 	const geometry = new RoundedBoxGeometry(length, 0.1, 0.01, 5, 0.004);
+// 	return (
+// 		<mesh
+// 			ref={meshRef}
+// 			position={[
+// 				0,
+// 				0,
+// 				0.005 + (0.005 + offset) * (negativeOffset ? -1 : 1),
+// 			]}
+// 			receiveShadow
+// 			castShadow
+// 			geometry={geometry}
+// 		>
+// 			<StandardMaterial folder="oak-veneer" />
+// 		</mesh>
+// 	);
+// }
